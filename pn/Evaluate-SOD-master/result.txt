@@ -1,0 +1,86 @@
+ECSSD dataset with DSS method get 0.0199 mae, 0.9608 max-fmeasure, 0.9885 max-Emeasure, 0.9304 S-measure..
+ECSSD dataset with DSS method get 0.0384 mae, 0.9308 max-fmeasure, 0.9491 max-Emeasure, 0.9192 S-measure..
+ECSSD dataset with DSS method get 0.0489 mae, 0.9166 max-fmeasure, 0.9375 max-Emeasure, 0.9043 S-measure..
+ECSSD dataset with DSS method get 0.0489 mae, 0.9166 max-fmeasure, 0.9375 max-Emeasure, 0.9043 S-measure..
+ECSSD dataset with DSS method get 0.0489 mae, 0.9166 max-fmeasure, 0.9375 max-Emeasure, 0.9043 S-measure..
+ECSSD dataset with DSS method get 0.0384 mae, 0.9308 max-fmeasure, 0.9491 max-Emeasure, 0.9192 S-measure..
+ECSSD dataset with DSS method get 0.0442 mae, 0.9242 max-fmeasure, 0.9441 max-Emeasure, 0.9117 S-measure..
+ECSSD dataset with DSS method get 0.0453 mae, 0.9197 max-fmeasure, 0.9415 max-Emeasure, 0.9093 S-measure..
+ECSSD dataset with DSS method get 0.0483 mae, 0.9135 max-fmeasure, 0.9385 max-Emeasure, 0.9032 S-measure..
+ECSSD dataset with DSS method get 0.0449 mae, 0.9205 max-fmeasure, 0.9424 max-Emeasure, 0.9099 S-measure..
+ECSSD dataset with DSS method get 0.2383 mae, 0.2831 max-fmeasure, 0.2500 max-Emeasure, 0.3827 S-measure..
+ECSSD dataset with DSS method get 0.0430 mae, 0.9237 max-fmeasure, 0.9450 max-Emeasure, 0.9130 S-measure..
+ECSSD dataset with DSS method get 0.0576 mae, 0.9053 max-fmeasure, 0.9319 max-Emeasure, 0.8990 S-measure..
+ECSSD dataset with DSS method get 0.0426 mae, 0.9239 max-fmeasure, 0.9438 max-Emeasure, 0.9132 S-measure..
+ECSSD dataset with DSS method get 0.0576 mae, 0.9053 max-fmeasure, 0.9319 max-Emeasure, 0.8990 S-measure..
+ECSSD dataset with DSS method get 0.0506 mae, 0.9139 max-fmeasure, 0.9371 max-Emeasure, 0.9084 S-measure..
+ECSSD dataset with DSS method get 0.0440 mae, 0.9229 max-fmeasure, 0.9446 max-Emeasure, 0.9143 S-measure..
+ECSSD dataset with DSS method get 0.0430 mae, 0.9227 max-fmeasure, 0.9433 max-Emeasure, 0.9133 S-measure..
+ECSSD dataset with DSS method get 0.0426 mae, 0.9239 max-fmeasure, 0.9438 max-Emeasure, 0.9132 S-measure..
+ECSSD dataset with DSS method get 0.0645 mae, 0.9097 max-fmeasure, 0.9388 max-Emeasure, 0.8988 S-measure..
+ECSSD dataset with DSS method get 0.0650 mae, 0.8973 max-fmeasure, 0.9274 max-Emeasure, 0.8823 S-measure..
+ECSSD dataset with DSS method get 0.0529 mae, 0.9119 max-fmeasure, 0.9392 max-Emeasure, 0.9052 S-measure..
+ECSSD dataset with DSS method get 0.0426 mae, 0.9239 max-fmeasure, 0.9438 max-Emeasure, 0.9132 S-measure..
+ECSSD dataset with DSS method get 0.0618 mae, 0.8881 max-fmeasure, 0.9249 max-Emeasure, 0.8821 S-measure..
+ECSSD dataset with DSS method get 0.0618 mae, 0.8881 max-fmeasure, 0.9249 max-Emeasure, 0.8821 S-measure..
+ECSSD dataset with DSS method get 0.0537 mae, 0.9060 max-fmeasure, 0.9341 max-Emeasure, 0.8946 S-measure..
+ECSSD dataset with DSS method get 0.0525 mae, 0.9054 max-fmeasure, 0.9333 max-Emeasure, 0.8945 S-measure..
+ECSSD dataset with DSS method get 0.0636 mae, 0.8689 max-fmeasure, 0.9174 max-Emeasure, 0.8627 S-measure..
+ECSSD dataset with DSS method get 0.0525 mae, 0.9054 max-fmeasure, 0.9333 max-Emeasure, 0.8945 S-measure..
+ECSSD dataset with DSS method get 0.0663 mae, 0.8944 max-fmeasure, 0.9329 max-Emeasure, 0.8888 S-measure..
+ECSSD dataset with DSS method get 0.0663 mae, 0.8944 max-fmeasure
+ECSSD dataset with DSS method get 0.0663 mae, 0.8944 max-fmeasure
+ECSSD dataset with DSS method get 0.0759 mae, 0.8818 max-fmeasure
+ECSSD dataset with DSS method get 0.0737 mae, 0.8733 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.0758 mae, 0.8709 max-fmeasure
+ECSSD dataset with DSS method get 0.0774 mae, 0.8784 max-fmeasure
+ECSSD dataset with DSS method get 0.0695 mae, 0.8758 max-fmeasure
+ECSSD dataset with DSS method get 0.0757 mae, 0.8601 max-fmeasure
+ECSSD dataset with DSS method get 0.0658 mae, 0.8858 max-fmeasure
+ECSSD dataset with DSS method get 0.0639 mae, 0.8916 max-fmeasure
+ECSSD dataset with DSS method get 0.0658 mae, 0.8880 max-fmeasure
+ECSSD dataset with DSS method get 0.0613 mae, 0.8935 max-fmeasure
+ECSSD dataset with DSS method get 0.0605 mae, 0.8918 max-fmeasure
+ECSSD dataset with DSS method get 0.0631 mae, 0.8889 max-fmeasure
+ECSSD dataset with DSS method get 0.0630 mae, 0.8869 max-fmeasure
+ECSSD dataset with DSS method get 0.0630 mae, 0.8869 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.0774 mae, 0.8784 max-fmeasure
+ECSSD dataset with DSS method get 0.0774 mae, 0.8784 max-fmeasure
+ECSSD dataset with DSS method get 0.0758 mae, 0.8709 max-fmeasure
+ECSSD dataset with DSS method get 0.0758 mae, 0.8709 max-fmeasure
+ECSSD dataset with DSS method get 0.0774 mae, 0.8784 max-fmeasure
+ECSSD dataset with DSS method get 0.0774 mae, 0.8784 max-fmeasure
+ECSSD dataset with DSS method get 0.0758 mae, 0.8709 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.1150 mae, 0.8455 max-fmeasure
+ECSSD dataset with DSS method get 0.0467 mae, 0.9166 max-fmeasure
+ECSSD dataset with DSS method get 0.0737 mae, 0.8758 max-fmeasure
+ECSSD dataset with DSS method get 0.3763 mae, 0.4479 max-fmeasure
