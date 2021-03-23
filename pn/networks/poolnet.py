@@ -12,7 +12,7 @@ from .aspp import ASPP
 
 config_vgg = {'convert': [[128,256,512,512,512],[64,128,256,512,512]], 'deep_pool': [[512, 512, 256, 128], [512, 256, 128, 128], [True, True, True, False], [True, True, True, False]], 'score': 128}  # no convert layer, no conv6
 
-config_resnet = {'convert': [[64,256,512,1024,2048],[128,256,256,512,512]], 'deep_pool': [[512, 512, 256, 256, 128], [512, 256, 256, 128, 128], [False, True, True, True, False], [True, True, True, True, False],[True, True, True, True, True]], 'score': 128}
+config_resnet = {'convert': [[64,256,512,1024,2048],[128,256,256,512,512]], 'deep_pool': [[512, 512, 256, 256, 128], [512, 256, 256, 128, 128], [False, True, True, True, False], [True, True, True, True, False],[True, True, True, True, True],[True,True,True,True,True]], 'score': 128}
 
 class GradualBottleNeck(nn.Module):
     def __init__(self,inchannel,outchannel,lines,origin_kernel=3,origin_stride=1,origin_padding=1):
@@ -46,24 +46,34 @@ class ConvertLayer(nn.Module):
             resl.append(self.convert0[i](list_x[i]))
         return resl
 
+def rank_divisor(n,rk=1):
+    cn=0
+    for i in range(1,n+1):
+        if n%i==0:
+            cn+=1
+            if cn==rk:return i
+    return 1
 class DeepPoolLayer(nn.Module):
-    def __init__(self, k, k_out, need_x2, need_fuse,need_bn):
+    def __init__(self, k, k_out, need_x2, need_fuse,need_bn,need_gn):
         super(DeepPoolLayer, self).__init__()
         self.pools_sizes = [2,4,8]
         self.need_x2 = need_x2
         self.need_fuse = need_fuse
         self.need_bn=need_bn
+        self.need_gn=need_gn
         self.mid_channels=[64]
-        pools, convs, bns = [],[],[]
+        pools, convs, bns ,gns= [],[],[],[]
         for i in self.pools_sizes:
             pools.append(nn.AvgPool2d(kernel_size=i, stride=i))
             #nn.Conv2d(k, self.mid_channels, 3, 1, 1, bias=False), nn.Conv2d(self.mid_channels, k, 1, 1, 1, bias=False)
             convs.append(GradualBottleNeck(k,k,self.mid_channels))
             bns.append(nn.BatchNorm2d(k))
+            gns.append(nn.GroupNorm(num_groups=rank_divisor(k,3),num_channels=k))
 
         self.pools = nn.ModuleList(pools)
         self.convs = nn.ModuleList(convs)
         self.bns=nn.ModuleList(bns)
+        self.gns=nn.ModuleList(gns)
 #         self.relu = nn.ReLU()
         self.relu=nn.GELU()
         #add bottleneck
@@ -84,7 +94,8 @@ class DeepPoolLayer(nn.Module):
             # 此处引入batch_norm
             if self.need_bn:
                 y=self.bns[i](y)
-
+            if self.need_gn:
+                y=self.gns[i](y)
     
             resl = torch.add(resl, F.interpolate(y, x_size[2:], mode='bilinear', align_corners=True))
         resl = self.relu(resl)
@@ -116,7 +127,7 @@ def extra_layer(base_model_cfg, vgg):
 
     for i in range(len(config['deep_pool'][0])):
         #append all element in the right list
-        deep_pool_layers += [DeepPoolLayer(config['deep_pool'][0][i], config['deep_pool'][1][i], config['deep_pool'][2][i], config['deep_pool'][3][i],config['deep_pool'][4][i])]
+        deep_pool_layers += [DeepPoolLayer(config['deep_pool'][0][i], config['deep_pool'][1][i], config['deep_pool'][2][i], config['deep_pool'][3][i],config['deep_pool'][4][i],config['deep_pool'][5][i])]
 
     score_layers = ScoreLayer(config['score'])
 
