@@ -29,6 +29,15 @@ class Solver(object):
         self.show_every = config.show_every
         self.lr_decay_epoch = [5,10,15,20]
         self.build_model()
+        if self.config.resume:
+            from main import get_latest_model_version,get_latest_model_epoch
+            # try:
+            last_model=get_latest_model_version()
+            self.last_epoch=get_latest_model_epoch()
+            self.net.load_state_dict(torch.load(last_model))
+            # except:pass
+
+
         if config.mode == 'test':
             # print('Loading pre-trained model from %s...' % self.config.model)
             self.config.batch_size=1
@@ -74,10 +83,24 @@ class Solver(object):
 
         self.lr = self.config.lr
         self.wd = self.config.wd
-
-        self.optimizer = SGD(filter(lambda p: p.requires_grad, self.net.parameters()), lr=self.lr, weight_decay=self.wd,momentum=0.9)
+        optimizer=self.config.optimizer
+        if optimizer=='SGD':
+            self.optimizer = SGD(filter(lambda p: p.requires_grad, self.net.parameters()), lr=self.lr, weight_decay=self.wd,momentum=0.9)
+        elif optimizer=='Adam':
+            self.optimizer = Adam(filter(lambda p: p.requires_grad, self.net.parameters()), lr=self.lr, weight_decay=self.wd)
+        elif optimizer=='RAdam':
+            self.optimizer = Adam(filter(lambda p: p.requires_grad, self.net.parameters()), lr=self.lr,
+                                  weight_decay=self.wd)
         if self.config.mode=='train':
             self.print_network(self.net, 'PoolNet Structure')
+
+    def get_max_grad(self):
+        res=0
+        for w in self.optimizer.param_groups[0]['params']:
+            try:
+                res=max(res,max(w.grad))
+            except:pass
+        return res
 
     def tr(self):
         for i, data_batch in enumerate(self.train_loader):
@@ -85,6 +108,11 @@ class Solver(object):
         print(self.train_loader.count_size)
 
     def test(self):
+        self.name2func={
+            'sigmoid':torch.sigmoid,
+            'hardtanh':torch.nn.functional.hardtanh,
+
+        }
         mode_name = 'sal_fuse'
         time_s = time.time()
         img_num = len(self.test_loader)
@@ -95,10 +123,10 @@ class Solver(object):
                 if self.config.cuda:
                     images = images.cuda()
                 preds = self.net(images)
-                pred = np.squeeze(torch.sigmoid(preds).cpu().data.numpy())
+                pred = np.squeeze(self.name2func[self.config.test_function](preds).cpu().data.numpy())
                 multi_fuse = 255 * pred
                 cv2.imwrite(os.path.join(self.config.test_fold, name[:-4] + '_' + mode_name + '.png'), multi_fuse)
-                if (i+1)%50==0:
+                if (i+1)%2000==0:
                     print(i+1,time.time()-time_s)
         time_e = time.time()
         print('Speed: %f FPS' % (img_num/(time_e-time_s)))
@@ -111,10 +139,12 @@ class Solver(object):
         iter_num = len(self.train_loader.dataset) // self.config.batch_size
         aveGrad = 0
         start_time=time.time()
+        beg_epoch=0
+        if self.config.resume:beg_epoch=self.last_epoch
         import matplotlib.pyplot as plt
         x=[]
         sc=[]
-        for epoch in range(self.config.epoch):
+        for epoch in range(beg_epoch,self.config.epoch):
             r_sal_loss= 0
             self.net.zero_grad()
 
@@ -132,20 +162,26 @@ class Solver(object):
 
                 sal_pred = self.net(sal_image)
                 
-                sal_loss_fuse = F.binary_cross_entropy_with_logits(sal_pred, sal_label, reduction='sum')
+                sal_loss_fuse = F.binary_cross_entropy_with_logits(sal_pred, sal_label, reduction=self.config.reduction)
                 sal_loss = sal_loss_fuse / (self.iter_size * self.config.batch_size)
 
                 sc.append(sal_loss.item())
+                avg_cnt = 100
+                if (i + 1) % avg_cnt == 0:
+                    avg = np.array(sc[-avg_cnt:]).mean()
+                    sc = sc[:-avg_cnt]
+                    sc.append(avg)
                 r_sal_loss += sal_loss.data
                 sal_loss.backward()
 
                 aveGrad += 1
-
+                if self.config.show_grad and i%10==0:
+                    print(self.get_max_grad())
                 # accumulate gradients as done in DSS
                 if aveGrad % self.iter_size == 0:
 #                     引入clip
                     import torch.nn as nn
-                    nn.utils.clip_grad_norm_(self.net.parameters(), max_norm=20, norm_type=2)
+                    nn.utils.clip_grad_norm_(self.net.parameters(), max_norm=10, norm_type=2)
                     
                     self.optimizer.step()
                     self.optimizer.zero_grad()
@@ -171,7 +207,7 @@ class Solver(object):
                 from main import get_last_runid
                 test_model(get_last_runid(),'epoch_{}'.format(epoch+1))
                 
-                
+            x=list(np.arange(len(sc)))
             plt.plot(x,sc)
             plt.savefig('%s/models/epoch_%d.png'% (self.config.save_folder, epoch + 1))
             if epoch in self.lr_decay_epoch:

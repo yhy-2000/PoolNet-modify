@@ -35,10 +35,13 @@ def main(config,test_size_distribuion=False):
     if config.mode == 'train':
         train_loader = get_loader(config)
         run = 0
-        while os.path.exists("%s/run-%d" % (config.save_folder, run)):
-            run += 1
-        os.mkdir("%s/run-%d" % (config.save_folder, run))
-        os.mkdir("%s/run-%d/models" % (config.save_folder, run))
+        if config.resume:
+            run=get_last_runid()
+        else:
+            while os.path.exists("%s/run-%d" % (config.save_folder, run)):
+                run += 1
+            os.mkdir("%s/run-%d" % (config.save_folder, run))
+            os.mkdir("%s/run-%d/models" % (config.save_folder, run))
         config.save_folder = "%s/run-%d" % (config.save_folder, run)
         train = Solver(train_loader, None, config)
         if not test_size_distribuion:
@@ -63,7 +66,42 @@ def get_last_runid():
             id=int(e[1])
             res=max(res,id)
     return res
-
+def get_latest_model_version(runid=get_last_runid()):
+    dir='results/run-{}/models'.format(runid)
+    resid=-1
+    res=''
+    for w in os.listdir(dir):
+        e=w.split('.')
+        if len(e)==2 and e[1]=='pth':
+            f=e[0].split('_')
+            if len(f)==2:
+                curid=int(f[1])
+                if curid>resid:
+                    resid=curid
+                    res=w
+    return os.path.join(dir,res)
+def get_latest_model_epoch(runid=get_last_runid()):
+    dir = 'results/run-{}/models'.format(runid)
+    resid = -1
+    res = ''
+    for w in os.listdir(dir):
+        e = w.split('.')
+        if len(e) == 2 and e[1] == 'pth':
+            f = e[0].split('_')
+            if len(f) == 2:
+                curid = int(f[1])
+                if curid > resid:
+                    resid = curid
+                    res = w
+    return resid
+def rank(model_name):
+    e=model_name.split('.')
+    pre=e[0]
+    u=pre.split('_')
+    if len(u)==1:
+        #final.pth
+        return 10000
+    return int(u[1])
 def get_all_model_name(runid=get_last_runid()):
     rtdir='results/run-{}/models'.format(runid)
     ans=[]
@@ -71,22 +109,23 @@ def get_all_model_name(runid=get_last_runid()):
         e=w.split('.')
         if len(e)==2 and e[1]=='pth':
             ans.append(e[0])
+    ans.sort(key=rank,reverse=True)
     return ans
 
-def test_all_model(runid):
+def test_all_model(runid=get_last_runid()):
     for model_name in get_all_model_name(runid):
-        test_model(get_last_runid(),model_name=model_name)
+        test_model(runid,model_name=model_name)
 
         
 def add_parser():
     vgg_path = './dataset/pretrained/vgg16_20M.pth'
     resnet_path = './dataset/pretrained/resnet50_caffe.pth'
-    os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+    os.environ["CUDA_VISIBLE_DEVICES"] = '1'
     parser = argparse.ArgumentParser()
 
     # Hyper-parameters
     parser.add_argument('--n_color', type=int, default=3)
-    parser.add_argument('--lr', type=float, default=1e-2)  # Learning rate resnet:5e-5, vgg:1e-4
+    parser.add_argument('--lr', type=float, default=1e-3)  # Learning rate resnet:5e-5, vgg:1e-4
     parser.add_argument('--wd', type=float, default=0.0005)  # Weight decay
     parser.add_argument('--no-cuda', dest='cuda', action='store_false')
 
@@ -94,13 +133,18 @@ def add_parser():
     parser.add_argument('--arch', type=str, default='resnet')  # resnet or vgg
     parser.add_argument('--pretrained_model', type=str, default=resnet_path)
     parser.add_argument('--epoch', type=int, default=24)
-    parser.add_argument('--batch_size', type=int, default=32)  # only support 1 now
+    parser.add_argument('--batch_size', type=int, default=1)  # only support 1 now
     parser.add_argument('--num_thread', type=int, default=1)
     parser.add_argument('--load', type=str, default='')
     parser.add_argument('--save_folder', type=str, default='./results')
     parser.add_argument('--epoch_save', type=int, default=1)
     parser.add_argument('--iter_size', type=int, default=10)
     parser.add_argument('--show_every', type=int, default=50)
+    parser.add_argument('--reduction',type=str,default='sum')
+    parser.add_argument('--show_grad',type=bool,default=True)
+    parser.add_argument('--resume',type=bool,default=True)
+    parser.add_argument('--test_function',type=str,default='sigmoid')
+    parser.add_argument('--optimizer',type=str,default='SGD')
 
     # Train data
     parser.add_argument('--train_root', type=str, default='./data/DUTS/DUTS-TR')
@@ -123,8 +167,9 @@ def add_parser():
 
     
     
-def train():
+def train(resume=False):
     config=add_parser()
+    config.resume=resume
     # Get test set info
     test_root, test_list = get_test_info(config.sal_mode)
     config.test_root = test_root

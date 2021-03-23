@@ -2,10 +2,12 @@ import os
 from cal_score import cal_score
 
 def test_model(num,model_name='final'):
-    command = 'python main.py --mode=test --model=results/run-{}/models/{}.pth --test_fold=results/run-{}-sal-e --sal_mode=e'.format(
+    print('testing {}'.format(model_name))
+    command = 'python main.py --mode=test --model=results/run-{}/models/{}.pth --test_fold=results/run-{}-sal-e --sal_mode=e ' \
+              '--test_function=hardtanh'.format(
         num,model_name, num)
     os.system(command)
-    print('testing {}'.format(model_name))
     cal_score(num)
 if __name__=='__main__':
-    test_model(15,'final')
+    from main import test_all_model
+    test_all_model()
