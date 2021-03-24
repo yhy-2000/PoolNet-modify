@@ -120,12 +120,16 @@ def test_all_model(runid=get_last_runid()):
 def add_parser():
     vgg_path = './dataset/pretrained/vgg16_20M.pth'
     resnet_path = './dataset/pretrained/resnet50_caffe.pth'
-    os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+    os.environ["CUDA_VISIBLE_DEVICES"] = '1'
     parser = argparse.ArgumentParser()
 
     # Hyper-parameters
     parser.add_argument('--n_color', type=int, default=3)
+<<<<<<< HEAD
     parser.add_argument('--lr', type=float, default=1e-1)  # Learning rate resnet:5e-5, vgg:1e-4
+=======
+    parser.add_argument('--lr', type=float, default=1e-3)  # Learning rate resnet:5e-5, vgg:1e-4
+>>>>>>> 6e03716a207ae53a533559423d1eb0b334fd6cae
     parser.add_argument('--wd', type=float, default=0.0005)  # Weight decay
     parser.add_argument('--no-cuda', dest='cuda', action='store_false')
 
@@ -133,14 +137,22 @@ def add_parser():
     parser.add_argument('--arch', type=str, default='resnet')  # resnet or vgg
     parser.add_argument('--pretrained_model', type=str, default=resnet_path)
     parser.add_argument('--epoch', type=int, default=24)
+<<<<<<< HEAD
     parser.add_argument('--batch_size', type=int, default=6)  # only support 1 now
+=======
+    parser.add_argument('--batch_size', type=int, default=1)  # only support 1 now
+>>>>>>> 6e03716a207ae53a533559423d1eb0b334fd6cae
     parser.add_argument('--num_thread', type=int, default=1)
     parser.add_argument('--load', type=str, default='')
     parser.add_argument('--save_folder', type=str, default='./results')
     parser.add_argument('--epoch_save', type=int, default=1)
     parser.add_argument('--iter_size', type=int, default=1)
     parser.add_argument('--show_every', type=int, default=50)
+<<<<<<< HEAD
     parser.add_argument('--reduction',type=str,default='mean')
+=======
+    parser.add_argument('--reduction',type=str,default='sum')
+>>>>>>> 6e03716a207ae53a533559423d1eb0b334fd6cae
     parser.add_argument('--show_grad',type=bool,default=True)
     parser.add_argument('--resume',type=bool,default=True)
     parser.add_argument('--test_function',type=str,default='sigmoid')
