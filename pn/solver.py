@@ -163,7 +163,7 @@ class Solver(object):
                 sal_pred = self.net(sal_image)
                 
                 sal_loss_fuse = F.binary_cross_entropy_with_logits(sal_pred, sal_label, reduction=self.config.reduction)
-                sal_loss = sal_loss_fuse / (self.iter_size * self.config.batch_size)
+                sal_loss = sal_loss_fuse / (self.iter_size )
 
                 sc.append(sal_loss.item())
                 avg_cnt = 100
